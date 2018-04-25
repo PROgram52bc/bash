@@ -2,7 +2,7 @@
 # This program watches for processes that consume high cpu
 # and notify, kill them as needed.
 # FIXME: Check if the program is already running at the beginning
-
+if [ "$(ps ax | grep -v grep | grep $0)" ]; then echo "Already running";exit; fi
 KILLLEVEL=95 # The percentage to kill the process
 NOTELEVEL=60 # The percentage to notify the process
 TIMEINTERVAL=30 # The interval between two checks, in seconds
