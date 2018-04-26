@@ -1,5 +1,7 @@
 #/bin/bash
 # This script switches the current viewport to the central one
+# note: This doesn't work if another screen is plugged,
+# As a solution, don't plug-in external screen until the script is loaded!
 ##debug lines start with ##
 ##touch ~/Desktop/debug.log
 ##
