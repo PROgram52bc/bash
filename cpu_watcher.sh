@@ -6,22 +6,16 @@ NOTELEVEL=60 # The percentage to notify the process
 TIMEINTERVAL=30 # The interval between two checks, in seconds
 NOTEICON="/home/wallet/Pictures/source/warning_yellow.png"
 KILLICON="/home/wallet/Pictures/source/warning_shield.png"
-LOGFILE="/home/wallet/Desktop/cpu_watcher.log"
+## LOGFILE="/home/wallet/Desktop/cpu_watcher.log"
 
-# if [ "$(ps ax | grep -v grep | grep $0)" ]; then 
-# 	echo $(date) >> $LOGFILE
-# 	echo "Script not launched because already running" >> $LOGFILE
-# 	echo $(ps ax | grep -v grep | grep $0) >> $LOGFILE
-# 	exit 
-# fi
 
-echo $(date) >> $LOGFILE
-echo "Script ran" >> $LOGFILE
+## echo $(date) >> $LOGFILE
+## echo "Script ran" >> $LOGFILE
 
 while :
 do
-	echo $(date) >> $LOGFILE
-	echo "Checked once" >> $LOGFILE
+## 	echo $(date) >> $LOGFILE
+## 	echo "Checked once" >> $LOGFILE
 	result=$(ps -eo pcpu,pid,comm --sort -pcpu | head -n 2 | tail -n 1)
 	cpu=$(echo $result | awk '{print $1}')
 	pid=$(echo $result | awk '{print $2}')
