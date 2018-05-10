@@ -6,16 +6,19 @@ NOTELEVELCPU=60 # The percentage cpu usage to notify the process
 KILLLEVELMEM=95 # The percentage memory usage to kill the process
 NOTELEVELMEM=60 # The percentage memory usage to notify the process
 TIMEINTERVAL=30 # The interval between two checks, in seconds
+NOTIFYCHECK=60 # Send a note every # cycles
 NOTEICON="/home/wallet/Pictures/source/warning_yellow.png"
 KILLICON="/home/wallet/Pictures/source/warning_shield.png"
-## LOGFILE="/home/wallet/Desktop/cpu_watcher.log"
+##LOGFILE="/home/wallet/Desktop/cpu_watcher.log"
 
 
-## echo $(date) >> $LOGFILE
-## echo "Script ran" >> $LOGFILE
+##echo $(date) >> $LOGFILE
+##echo "Script ran" >> $LOGFILE
+cycle=0
 
 while :
 do
+	export DISPLAY=:0.0 # for running notify-send
 ## 	echo $(date) >> $LOGFILE
 ## 	echo "Checked once" >> $LOGFILE
 	result=$(ps -eo pid,pcpu,pmem,comm --sort -pcpu | head -n 2 | tail -n 1)
@@ -45,6 +48,14 @@ do
 	then
 		notify-send -i ${NOTEICON} "Memory Usage Warning" "${name} (pid: ${pid}) is using ${mem}% of memory."
 	fi
+
+	# send note
+	if [ $((cycle % NOTIFYCHECK)) -eq 0 ]
+	then
+		notify-send "CPU Watcher" "CPU watcher is running in the background."
+	fi
+
+	((cycle++))
 
 	sleep $TIMEINTERVAL
 done
