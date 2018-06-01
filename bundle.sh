@@ -1,4 +1,10 @@
 # usage: ./bundle.sh in_file1 in_file2 ... > out_script.sh
+# fixme: a line with 'here is $i' in the argument file
+# will cause problem
+# solution 1: Use sed to add a space after every 'here is $i'
+# in source file.
+# solution 2: Use a generator to provide a string that is
+# not present in the argument file.
 echo "# bash this file to extract files listed below:"
 for i
 do
