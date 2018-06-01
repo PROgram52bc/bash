@@ -28,31 +28,31 @@ transfer()
 	done
 
 	if [ ${#downloadedFiles[@]} != 0 ]; then
-		echo "${#downloadedFiles[@]} file(s) to be moved to $PWD:"
+		echo "${#downloadedFiles[@]} file(s) being moved to $PWD:"
 		for i in "${downloadedFiles[@]}"
 		do
 			mv "$i" $PWD 
-			echo "moving ${i##*/}..."
+			echo "${i##*/}"
 		done
 		echo "Done!"
-		echo ""
+		echo
 	fi
 
 	if [ ${#downloadingFiles[@]} != 0 ]; then
 		echo "${#downloadingFiles[@]} file(s) being downloaded, thus not moved:"
 		for i in "${downloadingFiles[@]}"
 		do
-			echo "$i"
+			echo "${i##*/}"
 		done
 
 		# count down and retry
-		for i in $(seq ${RetryCountDown} 0)
+		for (( i=$RetryCountDown; i>0; i-- ))
 		do
 			printf "Retry in $i... (press Ctrl-C to terminate)"
 			sleep 1
-			printf "\r										  \r"
+			printf "\r                                          \r"
 		done
-		echo ""
+		echo
 		transfer
 	fi
 }
