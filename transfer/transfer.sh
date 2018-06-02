@@ -31,7 +31,7 @@ transfer()
 		echo "${#downloadedFiles[@]} file(s) being moved to $PWD:"
 		for i in "${downloadedFiles[@]}"
 		do
-			mv "$i" $PWD 
+			mv "$i" "$PWD" 
 			echo "${i##*/}"
 		done
 		echo "Done!"
