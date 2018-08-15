@@ -1,6 +1,6 @@
-No.,Address,Name,sal,old?,friend?,money?,eng?,Last,First,MI,Spouse First,Spouse MI,Street Line1,Street Line2,Street Line3,City,State,Zip,Nation
+num,address,name,sal,isOld,isClose,isMoney,isEng,Last,First,MI,Spouse First,Spouse MI,Street Line1,Street Line2,Street Line3,City,State,Zip,Nation
 1,daviddenghaotian@163.com,叶红枫阿姨,您,,,y,,Ye,Fancy,,Jian,,,,,Beijing,,,China
 2,2277573893@qq.com,百佳,你,y,y,,,Li,Baijia,,,,,,,Telaviv,,,China
 3,daviddenghaotian@163.com,徐叔叔全家,你们,y,,y,,Xu,Jianquan,,Wei,,,,,Beijing,,,China
 4,daviddenghaotian@163.com,Dr. DeLong,,y,,y,y,DeLong,Dr. Matt,,,,236 W. Reade Ave.,,,Upland,IN,46989,USA
-5,daviddenghaotian@163.com,Dr. Brandle,,,,y,y,,,,,,,,,,,,
+5,daviddenghaotian@163.com,Dr. Brandle,,,,y,y,blah,blah,blah,blah,,,blah,blah,,blah,,blah

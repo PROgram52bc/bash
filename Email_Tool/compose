@@ -1,0 +1,46 @@
+#!/bin/bash
+
+if test $# != 2; then echo "usage: $0 template_name data.csv"
+	exit
+fi
+DATAFILE=$2
+OFOLDER="./letters/$1"
+IFOLDER="./templates/$1"
+IFS=,
+
+# empty the output folder
+if [ ! -d $OFOLDER ]; then
+	mkdir -p $OFOLDER # make parent dir as well
+else
+	rm $OFOLDER/*
+fi
+
+read -a keyArr < $DATAFILE # read the 1st line to an array
+
+sed '1d' $DATAFILE | while read -a valArr # read from 2nd line
+do
+	for i in ${!keyArr[@]}; do
+		keyArr[$i]=${keyArr[$i]// /_}
+		varArr[$i]=${varArr[$i]// /_}
+		declare "${keyArr[$i]}"="${valArr[$i]}"
+	done
+	# if "num" is a valid number (eliminate unnecessary entries)
+	if [[ ${num} =~ ^[0-9]+$ ]]; then 
+		echo composing for $num: $name
+		#	DON'T INDENT START
+		if [ "$isEng" != y ]; then
+eval "cat << EOF
+$(<${IFOLDER}/zh.txt)
+EOF" > ${OFOLDER}/${num}.txt
+		else
+eval "cat << EOF
+$(<${IFOLDER}/en.txt)
+EOF" > ${OFOLDER}/${num}.txt
+		fi
+		#	DON'T INDENT END
+	fi
+done
+cp $DATAFILE $OFOLDER/data.csv
+cp $IFOLDER/subject_en.txt $OFOLDER/subject_en.txt
+cp $IFOLDER/subject_zh.txt $OFOLDER/subject_zh.txt
+echo Letters composed! See $OFOLDER
