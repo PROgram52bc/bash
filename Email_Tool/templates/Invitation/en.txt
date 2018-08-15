@@ -1,4 +1,0 @@
-Hi ${name},
-$([ "$isOld" = y ] && echo "I really appreciated your prayer and support during the mission trip that I attended in April! ")It happened that I will be participating in $([ "$isOld" = y ] && echo another || echo a) mission trip to South America in January 2019, which is arranged mainly for Computer Science students, who will then be serving the people there with technical supports.
-Your prayer will certainly bring me encouragements and strengths in every subtle way-- if you would like to $([ "$isOld" = y ] && echo continue praying || echo pray) for me$([ "$isMoney" = y ] && echo " (or to support me financially)"), please reply to this email, so that I can forward you any progress of the trip. Thanks!
-David Deng
