@@ -5,7 +5,6 @@
 # 3. retry automatically after a few seconds
 DownloadDIR=/home/wallet/Downloads
 DownloadingRegex="^.*\.part$"
-SpacedRegex="^.* .*$"
 RetryCountDown=10
 
 transfer()
@@ -17,6 +16,7 @@ transfer()
 	declare -a downloadedFiles # Stores all files 'a' without a corresponding 'a.part'
 	for file in $DownloadDIR/*
 	do
+		if [ ! -f $file ]; then continue; fi # skip all non-files. e.g. ~/Downloads/*
 		if [[ $file =~ $DownloadingRegex ]]; then continue; fi # skip all files in the form 'a.part'
 		if [ -f "${file}.part" ]; then # if file is being downloaded
 			downloadingFiles[$DownloadingIdx]=${file} 
