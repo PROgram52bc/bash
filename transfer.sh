@@ -3,7 +3,7 @@
 # 1. handle space in file names correctly, 
 # 2. skip files being downloaded (files that match DownloadingRegex)
 # 3. retry automatically after a few seconds
-DownloadDIR=/home/wallet/Downloads
+DownloadDIR=${HOME}/Downloads
 DownloadingRegex="^.*\.part$"
 RetryCountDown=10
 
