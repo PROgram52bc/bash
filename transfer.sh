@@ -16,7 +16,7 @@ transfer()
 	declare -a downloadedFiles # Stores all files 'a' without a corresponding 'a.part'
 	for file in $DownloadDIR/*
 	do
-		if [ ! -f "$file" ]; then continue; fi # skip all non-files. e.g. ~/Downloads/*
+		if [ ! -f "$file" ] && [ ! -d "$file" ]; then continue; fi # skip all that are non-files and non-directories. e.g. ~/Downloads/*
 		if [[ $file =~ $DownloadingRegex ]]; then continue; fi # skip all files in the form 'a.part'
 		if [ -f "${file}.part" ]; then # if file is being downloaded
 			downloadingFiles[$DownloadingIdx]=${file} 
