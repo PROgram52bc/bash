@@ -16,20 +16,20 @@ repeat() {
 	for (( i=0; i<$2; i++ )); do printf $1; done
 }
 singleStreamer() {
-	# Assuming there is 1+ argument
-	argLength=${#1}
+	# Storing all arguments as a single string
+	argString=$*
+	argLength=${#argString}
 	sideLength=$(( (width-argLength) / 2 ))
 	repeat $fillChar $sideLength
-	printf -- $1
+	printf -- "${argString}"
 	repeat $fillChar $sideLength
 	printf "\n"
 }
 
 tripleStreamer() {
-	# Assuming there is 1+ argument
 	repeat $fillChar $width
 	printf "\n"
-	singleStreamer $1
+	singleStreamer "$*"
 	repeat $fillChar $width
 	printf "\n"
 }
@@ -50,9 +50,13 @@ while (( $# > 1 )); do
 			shift
 			shift
 			;;
-		-*|--*) # unknown options
-			echo "unknown option: $key"
-			exit -1
+# Not using, since user might want to print sth like '--hello'
+#		-*|--*) # unknown options
+#			echo "unknown option: $key"
+#			exit -1
+#			;;
+		*)
+			break
 			;;
 	esac
 done
@@ -62,4 +66,4 @@ if (( ${#@} < 1 )); then # if no message specified
 	usage
 fi
 
-$streamer $1
+$streamer $*
