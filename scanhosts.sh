@@ -12,5 +12,7 @@ for host in $(eval echo $HOSTCOLLECTIONS); do
 	if nc -w 1 $host 22 > /dev/null 2>&1; then # timeout 1 second
 		# if successfully connected, quit and report
 		echo "================$host is open!================"
+		echo "Connecting with ssh..."
+		exec ssh $host
 	fi
 done
