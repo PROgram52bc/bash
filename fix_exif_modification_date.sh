@@ -9,14 +9,14 @@ function extract_date {
 	# returns 0 and sets var to the extracted date if succeeds
 	# returns 1 if failed
 	pattern1='[[:digit:]]{8}_[[:digit:]]{6}'
-	pattern2='[[:digit:]]{13}'
+	pattern2='[[:digit:]]{10}'
 	if echo $1 | grep -E $pattern1 > /dev/null; then
 		# IMG_20210608_104811.jpg -> 2021-06-08 10:48:11
 		value=`echo $1 | sed -E 's/.*([[:digit:]]{4})([[:digit:]]{2})([[:digit:]]{2})_([[:digit:]]{2})([[:digit:]]{2})([[:digit:]]{2}).*/\1-\2-\3 \4:\5:\6/'`
 		eval $2='$value' # use quote to escape space in $value
 	elif echo $1 | grep -E $pattern2 > /dev/null; then
 		# mmexport1479161974377.jpg -> 2016-11-14 17:19:34-05:00
-		epoch=`echo $1 | sed -E 's/.*([[:digit:]]{10})[[:digit:]]{3}.*/\1/'`
+		epoch=`echo $1 | sed -E 's/[^[:digit:]]*([[:digit:]]{10}).*/\1/'`
 		eval $2='`date --date="@$epoch" --utc "+%Y-%m-%d %H:%M:%S"`'
 	else
 		return 1
@@ -25,8 +25,7 @@ function extract_date {
 
 function demo_extract_date {
 	file_name=$1
-	extract_date $file_name d
-	if [ $? = 0 ]; then
+	if extract_date $file_name d; then
 		echo "Date: $d"
 	else
 		echo "No date extracted"
@@ -35,6 +34,7 @@ function demo_extract_date {
 
 # demo_extract_date "mmexport1479161974377.jpg"
 # demo_extract_date "IMG_20210608_104811_copy_1773x3840.jpg"
+# demo_extract_date "Fotor_158644104802467.jpg"
 # demo_extract_date "invalid date"
 
 ##########
