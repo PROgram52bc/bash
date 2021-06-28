@@ -66,7 +66,7 @@ while IFS= read -r -d $'\0' dir; do
 	else
 		echo "SKIP"
 	fi
-	cd $orig
+	cd "$orig"
 done < <(find . -name .git -type d -prune -print0)
 
 # NOTE: not using the -execdir alternative to process all git repository because exporting functions and variables are too complicated and not portable.
