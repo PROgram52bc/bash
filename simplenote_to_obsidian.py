@@ -2,6 +2,7 @@
 import json
 import functools
 import re
+import sys
 import pprint
 
 DEBUG=1
@@ -9,9 +10,14 @@ def D(msg=""):
     if DEBUG:
         print(msg)
 
-with open("notes.json") as f:
-    notes = json.load(f)
-notes = notes.get("activeNotes")
+try:
+    with open("notes.json") as f:
+        notes = json.load(f)
+except FileNotFoundError:
+    print("Failed to open [notes.json]")
+    sys.exit(-1)
+
+active_notes = notes.get("activeNotes")
 
 #################################
 #  build a map from id to note  #
@@ -44,7 +50,7 @@ def reducer(mp, note):
     }
     return mp
 
-note_map = functools.reduce(reducer, notes, {})
+note_map = functools.reduce(reducer, active_notes, {})
 
 #####################
 #  transform links  #
@@ -60,14 +66,14 @@ def repl(match):
     D()
     return f"[{title}]({filename})"
 
-pattern = re.compile(r"\[.*?\]\(simplenote://note/(.*?)\)")
+pattern = re.compile(r"\[[^[]*?\]\(simplenote://note/(.*?)\)")
 
 #####################
 #  write out files  #
 #####################
 
 for note in note_map.values():
-    content = pattern.sub(repl, note['content'])
+    content = pattern.sub(repl, note.get('content', "UNDEFINED CONTENT"))
     filename = note.get("filename")
     with open(filename, "w") as f:
         f.write(content)
