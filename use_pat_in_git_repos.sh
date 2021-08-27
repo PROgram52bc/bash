@@ -1,3 +1,4 @@
+#!/bin/bash
 GIT_TOKEN=`cat ~/Documents/security_codes/github_token.txt`
 GIT_USERNAME="PROgram52bc"
 
@@ -31,7 +32,7 @@ function replace_with_pat {
 	echo "new_url: [$new_url]"
 
 	if [ $ASK = 0 ]; then
-		read -N1 -p "Replace? (Y/N/A/Q)" response < /dev/tty
+		read -n1 -p "Replace? (Y/N/A/Q)" response < /dev/tty
 		echo
 	else
 		response="y"
