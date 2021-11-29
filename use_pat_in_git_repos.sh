@@ -2,7 +2,7 @@
 GIT_TOKEN=`cat ~/Documents/security_codes/github_token.txt`
 GIT_USERNAME="PROgram52bc"
 
-OLD_SEGMENT="https://github.com/$GIT_USERNAME"
+OLD_SEGMENT="https://(.*@)?github.com/$GIT_USERNAME" # the (.*@)? is for replacing old tokens
 NEW_SEGMENT="https://$GIT_TOKEN@github.com/$GIT_USERNAME"
 
 function check_repo {
@@ -18,7 +18,7 @@ function check_repo {
 		return 1
 	fi
 
-	if ! echo $old_url | grep -q "$OLD_SEGMENT"; then
+	if ! echo $old_url | grep -Eq "$OLD_SEGMENT"; then
 		echo "Remote repository [$old_url] does not match pattern [$OLD_SEGMENT]."
 		return 1;
 	fi
@@ -28,7 +28,7 @@ ASK=0
 
 function replace_with_pat {
 	echo "old_url: [$old_url]"
-	new_url=`echo $old_url | sed "s^$OLD_SEGMENT^$NEW_SEGMENT^"`
+	new_url=`echo $old_url | sed -E "s^$OLD_SEGMENT^$NEW_SEGMENT^"`
 	echo "new_url: [$new_url]"
 
 	if [ $ASK = 0 ]; then
