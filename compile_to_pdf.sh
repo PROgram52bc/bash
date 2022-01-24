@@ -1,5 +1,5 @@
 #!/bin/bash
-pattern="^.*\.(png|jpg|jpeg)$"
+# pattern="^.*\.(png|jpg|jpeg|svg)$"
 
 function _convert() {
     img="$1"
@@ -7,13 +7,20 @@ function _convert() {
         echo "$img doesn't exist, ignored"
         return
     fi
-    if [[ ! "$img" =~ $pattern ]]; then
-        echo "$img doesn't match $pattern, ignored"
-        return
-    fi
+    # if [[ ! "$img" =~ $pattern ]]; then
+    #     echo "$img doesn't match $pattern, ignored"
+    #     return
+    # fi
     base=${img%.*}
     echo "Converting $img into ${base}.pdf..."
-    convert "$img" "${base}.pdf"
+    case ${img} in
+        *.svg) 
+            inkscape --file="$img" --export-area-drawing --without-gui --export-pdf="${base}.pdf" ;;
+        *.png|*.jpg|*.jpeg|*.gif)
+            convert "$img" "${base}.pdf" ;;
+        *)
+            echo "unrecognized pattern ${img}"
+    esac
     if [ $? -ne 0 ]; then
         echo "Failed to convert $img, abort."
         return
