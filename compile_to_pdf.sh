@@ -17,7 +17,7 @@ function _convert() {
         *.svg) 
             inkscape --file="$img" --export-area-drawing --without-gui --export-pdf="${base}.pdf" ;;
         *.png|*.jpg|*.jpeg|*.gif)
-            convert "$img" "${base}.pdf" ;;
+            img2pdf -o "${base}.pdf" "$img" ;;
         *)
             echo "unrecognized pattern ${img}"
     esac
