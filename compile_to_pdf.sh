@@ -14,10 +14,24 @@ function _convert() {
     base=${img%.*}
     echo "Converting $img into ${base}.pdf..."
     case ${img} in
-        *.svg) 
-            inkscape --file="$img" --export-area-drawing --without-gui --export-pdf="${base}.pdf" ;;
-        *.png|*.jpg|*.jpeg|*.gif)
-            img2pdf -o "${base}.pdf" "$img" ;;
+        *.svg)
+            inkscape --file="$img" --export-area-drawing --without-gui --export-pdf="${base}.pdf"
+            ;;
+        *.png)
+            # remove alpha channel if there is
+            noalpha=__${img}
+            if [ $(identify -format %A ${img}) == "True" ]; then
+                echo "Removing alpha..."
+                convert ${img} -background white -alpha remove -alpha off ${noalpha}
+            else
+                cp ${img} ${noalpha}
+            fi
+            img2pdf -o "${base}.pdf" "${noalpha}"
+            rm -f ${noalpha}
+            ;;
+        *.jpg|*.jpeg|*.gif)
+            img2pdf -o "${base}.pdf" "${img}"
+            ;;
         *)
             echo "unrecognized pattern ${img}"
     esac
