@@ -19,15 +19,15 @@ function _convert() {
             ;;
         *.png)
             # remove alpha channel if there is
-            noalpha=__${img}
-            if [ $(identify -format %A ${img}) == "True" ]; then
+            noalpha="__${img}"
+            if [ $(identify -format %A "${img}") == "True" ]; then
                 echo "Removing alpha..."
-                convert ${img} -background white -alpha remove -alpha off ${noalpha}
+                convert "${img}" -background white -alpha remove -alpha off "${noalpha}"
             else
-                cp ${img} ${noalpha}
+                cp "${img}" "${noalpha}"
             fi
             img2pdf -o "${base}.pdf" "${noalpha}"
-            rm -f ${noalpha}
+            rm -f "${noalpha}"
             ;;
         *.jpg|*.jpeg|*.gif)
             img2pdf -o "${base}.pdf" "${img}"
