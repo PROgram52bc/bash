@@ -1,23 +1,46 @@
 #!/bin/bash
-# This script creates symbolic links on the Desktop, with name(s) as same as that of the original file(s).  
-function fulldir() {
-    if [[ $1 =~ ^/ ]]; then # If the 1st argument contains /.* [regex] (is an absolute path)
-        echo $1
-    else # If the 1st argument is not an absolute path
-        if [[ $1 =~ / ]]; then
-            pushd ${1%/*} > /dev/null
-            echo $PWD/${1##*/}
-            popd > /dev/null
-        else
-            echo $PWD/$1
-        fi
-    fi
-} # This function prints the full path of the first argument, if it is a relative path; it prints the original path if it is already a full path.
-for i in "$@"
-do
-    if [[ $i == '.' ]]; then
-        ln -s "$PWD" ~/Desktop/ && echo "Link to $PWD created on Desktop!"
+# makes a symbolic link on the desktop. Works for both wsl and linux
+
+function isWSL() {
+    if grep -qi microsoft /proc/version; then
+        return 0
     else
-        ln -s "$(fulldir "$i")" ~/Desktop/ && echo "Link to $(fulldir "$i") created on Desktop!"
+        return 1
     fi
+}
+
+# $1: source
+# $2: target
+function mklink() {
+    if isWSL; then
+        echo "making link under WSL..."
+
+        # detect file type
+        src=$(realpath $1)
+        if [ -f "$src" ]; then
+            opt="/D"
+        elif [ -d "$src" ]; then
+            opt="/J"
+        else
+            echo "invalid file type for source: $src, must be either a file or a directory, abort."
+            exit -1
+        fi
+
+        # make Windows path
+        head=${src##*/}
+        target="$(wslpath -w "$2")\\$head"
+        # TODO: use wslpath to concatenate when it is fixed
+        # See https://github.com/microsoft/WSL/issues/4908 <2022-11-04, David Deng> #
+        # target="$(wslpath -w "$2/$head")"
+        echo cmd.exe /C mklink $opt "$target" "$(wslpath -w "$1")"
+        cmd.exe /C mklink $opt "$target" "$(wslpath -w "$1")"
+    else
+        echo "making link under linux..."
+        ln -s $(realpath "$1") $(realpath "$2")
+    fi
+}
+
+for src in "$@"
+do
+    mklink "$src" ~/Desktop
 done
