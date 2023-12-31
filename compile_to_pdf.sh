@@ -29,7 +29,7 @@ function _convert() {
             img2pdf -o "${base}.pdf" "${noalpha}"
             rm -f "${noalpha}"
             ;;
-        *.jpg|*.jpeg|*.gif)
+        *.jpg|*.jpeg|*.gif|*.webp)
             img2pdf -o "${base}.pdf" "${img}"
             ;;
         *)
